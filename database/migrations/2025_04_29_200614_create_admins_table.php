@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('password');
-            $table->string('image');
+            $table->foreignId('role_id')->nullable()->constrained('roles')->nullOnDelete();
+            $table->string('image')->default('no-image.png');
             $table->enum('status', ['active', 'not_active'])->default('not_active');
             $table->timestamps();
             $table->softDeletes();

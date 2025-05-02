@@ -16,4 +16,9 @@ class Category extends Model
     // }
 
     protected $guarded = [];
+
+    function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
 }

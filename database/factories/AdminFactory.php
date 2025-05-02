@@ -17,10 +17,7 @@ class AdminFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Admin',
-            'email' => 'm@gmail.com',
-            'password' => '123456789',
-            'status' => 'active',
+            //
         ];
     }
 }

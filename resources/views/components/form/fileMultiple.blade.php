@@ -5,8 +5,9 @@
 
 
     @if (empty($oldVal))
-        <input type="file" id="{{ $name }}" name="{{ $name }}" onchange="showImage(event)"
+        <input type="file" id="{{ $name }}" name="{{ $name }}" onchange="showImages(event)"
             class="form-control d-none @error($name) is-invalid @enderror" placeholder="{{ $hint }}" multiple>
+
         <label for="{{ $name }}"><img class="img-thumbnail prevImage" src="{{ asset('images/uploadImage.png') }}"
                 alt="Upload Image" width="350px" style="object-fit: cover"></label>
     @else

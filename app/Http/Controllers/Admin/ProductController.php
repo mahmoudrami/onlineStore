@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Image;
 use App\Models\product;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use function Pest\Laravel\delete;
 
+use function Pest\Laravel\delete;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 
@@ -26,13 +27,14 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admins.products.create');
+        $categories = Category::active()->get();
+        return view('admins.products.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         // dd($request->all());
         // dd($request->image);
@@ -40,6 +42,7 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->price = $request->price;
         $product->quantity = $request->quantity;
+        $product->category_id = $request->category_id;
         $product->save();
 
         $product->image()->create([
@@ -55,8 +58,6 @@ class ProductController extends Controller
                 ]);
             }
         }
-
-
         flash()->success('Product Created Successfully');
 
         return redirect()->route('admin.product.index');
@@ -75,7 +76,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('admins.products.edit', compact('product'));
+        $categories = Category::active()->get();
+        return view('admins.products.edit', compact('product', 'categories'));
     }
 
     /**
@@ -84,11 +86,12 @@ class ProductController extends Controller
     public function update(ProductRequest $request, Product $product)
     {
 
-
+        // dd($request->all());
         // dd($product->image->path);
         $product->name = $request->name;
         $product->price = $request->price;
         $product->quantity = $request->quantity;
+        $product->category_id = $request->category_id;
 
         if ($request->hasFile('image')) {
             deleteImage($product->image->path, 'products');
@@ -100,10 +103,6 @@ class ProductController extends Controller
         }
 
         if ($request->hasFile('galleries')) {
-            foreach ($product->gallery as $gallery) {
-                deleteImage($gallery->path, 'products');
-                $gallery->delete();
-            }
             foreach ($request->file('galleries') as $one) {
                 $product->gallery()->create([
                     'path' => uploadImage($one, 'products'),
@@ -111,6 +110,8 @@ class ProductController extends Controller
                 ]);
             }
         }
+
+        $product->save();
 
 
 
@@ -139,6 +140,7 @@ class ProductController extends Controller
     {
         $image =  Image::findOrFail($id);
         $image->delete();
+        deleteImage($image->path, 'products');
         return response()->json([
             'status' => 200,
 

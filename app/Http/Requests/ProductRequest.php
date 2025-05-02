@@ -26,8 +26,8 @@ class ProductRequest extends FormRequest
             $imageValidation = 'nullable';
         }
         return [
-            'name' => $imageValidation,
-            'image' => 'required',
+            'name' => 'required',
+            'image' => $imageValidation,
             'price' => 'required|numeric|min:0',
             'quantity' => 'required|numeric|min:0',
         ];

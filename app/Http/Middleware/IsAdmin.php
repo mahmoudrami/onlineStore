@@ -16,7 +16,6 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // dd(Auth::guard('admin')->user()->name);
         if (!Auth::guard('admin')->check()) {
             return redirect()->route('admin.login');
         }
