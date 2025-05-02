@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('admin/')->name('admin.')->group(function () {
 
     require __DIR__ . '/auth.php';
-
+    // admin add for
     Route::get('/', [HomeController::class, 'index'])->name('homePage');
 
     Route::resource('product', ProductController::class);
