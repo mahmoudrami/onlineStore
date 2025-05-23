@@ -3,6 +3,11 @@
 @section('title', 'Products')
 
 
+@section('breadcrumb')
+    <a href="{{ route('admin.product.index') }}">Products</a> <span>/</span>
+    <a href="{{ route('admin.product.edit', $product->id) }}">Edit</a>
+@endsection
+
 @section('css')
     <style>
         .wrapper-delete {
@@ -87,4 +92,39 @@
 
         }
     </script>
+
+
+
+    <script>
+        function deleteRow(event) {
+            event.preventDefault();
+            event.target.closest('tr').remove();
+        }
+
+        function addRow(attributeName) {
+            const slug = attributeName.toLowerCase().replace(/ /g, '-');
+            const tbody = document.getElementById('rows_' + slug);
+            const locales = @json($locales);
+
+            let row = document.createElement('tr');
+            let cells = '';
+
+            locales.forEach(locale => {
+                cells += `
+                    <td><input type="text" name="attributeValue[${attributeName}][${locale}][]" class="form-control"></td>
+                `;
+            });
+
+            cells += `<td><button type="button" onclick="deleteRow(event)" class="btn btn-sm btn-danger">X</button></td>`;
+            row.innerHTML = cells;
+            tbody.appendChild(row);
+        }
+
+        function toggleAttributeTable(slug) {
+            const checkbox = document.getElementById('check_' + slug);
+            const tableDiv = document.getElementById('table_' + slug);
+            tableDiv.style.display = checkbox.checked ? 'block' : 'none';
+        }
+    </script>
+
 @endsection

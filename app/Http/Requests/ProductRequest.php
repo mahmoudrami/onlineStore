@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Language;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductRequest extends FormRequest
@@ -25,11 +26,32 @@ class ProductRequest extends FormRequest
         if (request()->method() == 'PUT') {
             $imageValidation = 'nullable';
         }
-        return [
-            'name' => 'required',
+
+        $validation = [
+            'category_id' => 'required',
             'image' => $imageValidation,
             'price' => 'required|numeric|min:0',
             'quantity' => 'required|numeric|min:0',
+        ];
+
+        $locales = Language::active()->pluck('code')->toArray();
+        foreach ($locales as  $locale) {
+            $validation['name_' . $locale] = 'required';
+            $validation['description_' . $locale] = 'required';
+        }
+        return $validation;
+    }
+
+    public function attributes()
+    {
+        return [
+            'category_id' => 'Category'
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'category_id.required' => 'The Select Category is required.'
         ];
     }
 }

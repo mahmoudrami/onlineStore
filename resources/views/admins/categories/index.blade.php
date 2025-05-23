@@ -33,6 +33,7 @@
                 <th><input type="checkbox" class="form-checkbox" id="checkboxall"></th>
 
                 <th>id</th>
+                <th>image</th>
                 <th>name</th>
                 <th>status</th>
                 <th>actions</th>
@@ -44,6 +45,7 @@
                 <tr>
                     <td><input type="checkbox" name="itemsIds[]" class="chbtn" value="{{ $category->id }}"></td>
                     <td>{{ $category->id }}</td>
+                    <td><img src="{{ $category->img_path }}" width="150px" alt="{{ $category->name }}"></td>
                     <td>{{ $category->name }}</td>
                     <td>
                         <span style="font-size: 12px;padding: 8px;"
@@ -55,7 +57,8 @@
                     <td>
                         <a href="{{ route('admin.category.edit', $category->id) }}" class="btn btn-sm btn-primary"><i
                                 class="fas fa-edit"></i></a>
-                        <form action="{{ route('admin.category.destroy', $category->id) }}" method="POST" class="d-inline">
+                        <form action="{{ route('admin.category.destroy', $category->id) }}" method="POST"
+                            class="d-inline">
                             @csrf
                             @method('delete')
                             <button onclick="deleteItem(event)" class="btn btn-sm btn-danger"><i
@@ -72,6 +75,7 @@
 
         </tbody>
     </table>
+    {{ $categories->links() }}
 @endsection
 
 @section('js')

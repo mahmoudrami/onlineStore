@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Language;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CategoryRequest extends FormRequest
@@ -21,8 +22,20 @@ class CategoryRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => 'required'
-        ];
+        $locales = Language::active()->get()->pluck('code')->toArray();
+        $data = [];
+
+        $imageValidation = 'required';
+        if (request()->method() == 'PUT') {
+            $imageValidation = 'nullable';
+        }
+
+        foreach ($locales as $locale) {
+            $data['name_' . $locale] = 'required';
+        }
+
+        $data['image'] = $imageValidation;
+        // dd($data);
+        return $data;
     }
 }

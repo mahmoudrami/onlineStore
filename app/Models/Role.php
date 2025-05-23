@@ -10,6 +10,7 @@ class Role extends Model
     use SoftDeletes;
     protected $guarded = [];
 
+
     public function scopeActive($query)
     {
         return $query->where('status', 'active');

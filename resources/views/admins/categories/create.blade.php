@@ -3,6 +3,11 @@
 @section('title', 'Categories')
 
 
+@section('breadcrumb')
+    <a href="{{ route('admin.category.index') }}">Categories</a> <span>/</span>
+    <a href="{{ route('admin.category.create') }}">Create</a>
+@endsection
+
 @section('css')
 
 @endsection
@@ -12,7 +17,7 @@
         <h1 class="h3 mb-4 text-gray-800">Add New Category</h1>
         <div class="btn-group">
             @if (has_permission('admin.category.index'))
-                <a href="{{ route('admin.category.index') }}" class="btn btn-primary">All Products</a>
+                <a href="{{ route('admin.category.index') }}" class="btn btn-primary">All Categories</a>
             @endif
         </div>
     </div>

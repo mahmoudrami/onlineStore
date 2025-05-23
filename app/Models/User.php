@@ -46,4 +46,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    function getImgPathAttribute()
+    {
+        if ($this->image == 'no-image.png') {
+            return asset('images/no-image.png');
+        } else {
+            return asset('images/users/' . $this->image);
+        }
+    }
 }

@@ -3,18 +3,41 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
+use App\Models\Language;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Route;
 use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
+    private $locales;
+    public function __construct()
+    {
+        $this->locales = Language::all()->pluck('code')->toArray();
+        view()->share(['locales' => $this->locales]);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = Category::latest('id')->paginate();
+        $routes = Route::getRoutes();
+
+        $resourceNames = collect($routes)->filter(function ($route) {
+            return $route->getName() && str_starts_with($route->getName(), 'admin.') && str_contains($route->getName(), '.index');
+        })->map(function ($route) {
+            // مثال: admin.products.index => products
+            $name = $route->getName(); // admin.products.index
+            return explode('.', $name)[1]; // products
+        })->unique()->values();
+
+
+        // dd('contact');
+        // dd($this->locales);
+        $categories = Category::latest('id')->paginate(10);
 
         return view('admins.categories.index', compact('categories'));
     }
@@ -32,9 +55,16 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        Category::create([
-            'name' => $request->name
-        ]);
+        $category = new Category();
+
+
+        foreach ($this->locales as  $locale) {
+            $category->translateOrNew($locale)->name = $request->get('name_' . $locale);
+        }
+
+        $category->image = uploadImage($request->file('image'), 'categories');
+
+        $category->save();
 
         flash()->success('Category Created Successfully');
         return redirect()->route('admin.category.index');
@@ -61,9 +91,17 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
-        $category->update([
-            'name' => $request->name
-        ]);
+
+        foreach ($this->locales as  $locale) {
+            $category->translateOrNew($locale)->name = $request->get('name_' . $locale);
+        }
+
+        if ($request->hasFile('image')) {
+            deleteImage($category->image, 'categories');
+            $category->image = uploadImage($request->file('image'), 'categories');
+        }
+
+        $category->save();
 
         flash()->success('Category Updated Successfully');
         return redirect()->route('admin.category.index');

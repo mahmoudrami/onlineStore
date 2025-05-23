@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
+use App\Models\Language;
 use App\Models\Permission;
 use App\Models\RolePermission;
 use Illuminate\Pagination\Paginator;
@@ -42,7 +44,9 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
             $view->with([
-                'adminPermissions' => $adminPermissions
+                'adminPermissions' => $adminPermissions,
+                'locales' => Language::active()->get()->pluck('code')->toArray(),
+                'categories' => Category::active()->get()
             ]);
         });
         // view()->share('adminPermissions', $adminPermissions);

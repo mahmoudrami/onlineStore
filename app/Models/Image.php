@@ -12,6 +12,7 @@ class Image extends Model
 
     protected $guarded = [];
 
+
     function imageable()
     {
         return $this->morphTo();

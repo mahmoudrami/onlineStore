@@ -13,8 +13,16 @@ return new class extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->enum('status', ['not_active', 'active'])->default('not_active');
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
+        Schema::create('role_translations', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->foreignId('role_id')->constrained('roles')->cascadeOnDelete();
+            $table->string('locale');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -25,6 +33,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('role_translations');
         Schema::dropIfExists('roles');
     }
 };

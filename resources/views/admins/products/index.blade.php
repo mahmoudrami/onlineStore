@@ -33,6 +33,7 @@
                 <th><input type="checkbox" class="form-checkbox" id="checkboxall"></th>
                 <th>id</th>
                 <th>image</th>
+                <th>supplier</th>
                 <th>name</th>
                 <th>price</th>
                 <th>quantity</th>
@@ -47,6 +48,8 @@
                     <td><input type="checkbox" name="itemsIds[]" class="chbtn" value="{{ $product->id }}"></td>
                     <td>{{ $product->id }}</td>
                     <td><img src="{{ $product->img_path }}" width="100px" alt="{{ $product->name }}"></td>
+                    <td>{{ $product->supplier->name }}</td>
+                    <td>{{ $product->category->name }}</td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->price }}</td>
                     <td>{{ $product->quantity }}</td>
@@ -71,12 +74,13 @@
             @empty
 
                 <tr>
-                    <td colspan="6" class="text-center">Not Data Found</td>
+                    <td colspan="9" class="text-center">Not Data Found</td>
                 </tr>
             @endforelse
 
         </tbody>
     </table>
+    {{ $products->links() }}
 @endsection
 
 @section('js')
