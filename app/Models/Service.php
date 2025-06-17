@@ -19,4 +19,9 @@ class Service extends Model
     {
         return $query->where('status', 'active');
     }
+
+    public function getImgPathAttribute()
+    {
+        return asset('images/services/' . $this->icon);
+    }
 }

@@ -51,6 +51,6 @@ class AppServiceProvider extends ServiceProvider
         });
         // view()->share('adminPermissions', $adminPermissions);
 
-        Paginator::useBootstrapFive();
+        Paginator::useBootstrapFour();
     }
 }

@@ -5,7 +5,7 @@
 
 @section('breadcrumb')
     <a href="{{ route('supplier.product.index') }}">Products</a> <span>/</span>
-    <a href="{{ route('supplier.product.edit') }}">Edit</a>
+    <a href="{{ route('supplier.product.edit', $product->id) }}">Edit</a>
 @endsection
 
 @section('css')

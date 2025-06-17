@@ -2,12 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Site\BankController;
 use App\Http\Controllers\Site\FrontController;
 use App\Http\Controllers\Site\PaymentController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
 
 Route::get('/', [FrontController::class, 'index'])->name('homePage');
 
@@ -26,19 +25,6 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::get('send', function () {
-    $to      = 'recipient@example.com';
-    $subject = 'رسالة من Laravel باستخدام mail()';
-    $message = "مرحبًا بك!\n\nهذه رسالة تجريبية باستخدام الدالة mail().";
-    $headers = "From: your_email@example.com";
-
-    if (mail($to, $subject, $message, $headers)) {
-        return "تم إرسال البريد بنجاح!";
-    } else {
-        return "فشل في إرسال البريد.";
-    }
-});
-
 
 Route::get('cart/{id}', [FrontController::class, 'addItemToCart']);
 require __DIR__ . '/auth.php';
@@ -53,10 +39,32 @@ Route::get('errorUrl', [PaymentController::class, 'errorUrl'])->name('errorUrl')
 // Broadcast::routes(['middleware' => ['web', 'auth']]);
 
 Route::get('test', [FrontController::class, 'test']);
-Route::get('userWishlist', [FrontController::class, 'userWishlist'])->name('userWishlist');
 Route::get('categories', [FrontController::class, 'categories'])->name('categories');
 Route::get('category', [FrontController::class, 'category'])->name('category');
 Route::get('product', [FrontController::class, 'product'])->name('product');
 
+Route::get('cart', [frontController::class, 'cart'])->name('cart');
+
 Route::get('profile', [FrontController::class, 'profile'])->name('profile');
 Route::get('edit-password', [FrontController::class, 'editPassword'])->name('editPassword');
+
+Route::get('place-order', [FrontController::class, 'placeOrder']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('userWishlist', [FrontController::class, 'userWishlist'])->name('userWishlist');
+});
+
+
+
+
+Route::get('bank', [BankController::class, 'bank'])->name('bank');
+Route::get('money', [BankController::class, 'money'])->name('money');
+
+Route::get('formAddMoney', [BankController::class, 'formAddMoney'])->name('formAddMoney');
+Route::post('addMoney/{id}', [BankController::class, 'addMoney'])->name('addMoney');
+
+Route::get('formEditMoney/{id}', [BankController::class, 'formEditMoney'])->name('formEditMoney');
+Route::put('editMoney/{id}', [BankController::class, 'editMoney'])->name('editMoney');
+
+Route::get('formAddBank', [BankController::class, 'formAddBank'])->name('formAddBank');
+Route::post('addBank', [BankController::class, 'addBank'])->name('addBank');

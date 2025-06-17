@@ -12,14 +12,17 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Language;
 use App\Models\Wishlist;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Bank;
+use App\Models\Money;
+use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\OrderStatusUpdatedNotification;
 use Illuminate\Auth\AuthManager;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -33,15 +36,15 @@ class FrontController extends Controller
 
     function index()
     {
-
-        $categories = Category::active()->get();
-        $products = Product::active()->get();
-        return view('website.test', compact('categories', 'products'));
+        $services = Service::take(4)->get();
+        return view('website.test', compact('services'));
     }
 
     function categories()
     {
-        return view('website.categories');
+        $categories = Category::get();
+        $products = Product::paginate(10);
+        return view('website.categories', compact('categories', 'products'));
     }
 
     function category()
@@ -62,6 +65,21 @@ class FrontController extends Controller
     function product()
     {
         return view('website.product');
+    }
+
+    function cart()
+    {
+        $services = Service::first();
+        $cart = Cart::firstOrCreate(
+            [
+                'user_id' => Auth::user()->id ?? 1,
+            ],
+            [
+                'user_id' => Auth::user()->id ?? 1,
+            ]
+
+        );
+        return view('website.cart', compact('cart', 'services'));
     }
 
     function addItemToCart(Request $request, $id)
@@ -243,11 +261,13 @@ class FrontController extends Controller
 
     function userWishlist()
     {
-        // $productsIDs = Wishlist::where('user_id', Auth::user()->id)->get()->pluck('id')->toArray();
-        // $products = Product::whereIn('product_id', $productsIDs)->get();
+        $productsIDs = Wishlist::where('user_id', Auth::guard('web')->user()->id)->get()->pluck('product_id')->toArray();
+        $products = Product::whereIn('id', $productsIDs)->get();
 
-        // return view('website.wishlist', compact('products'));
-        return view('website.wishlist');
+        $productCategories = $products[0]->category->products()->paginate(10);
+
+        return view('website.wishlist', compact('products', 'productCategories'));
+        // return view('website.wishlist');
     }
 
     function profile()
@@ -324,5 +344,11 @@ class FrontController extends Controller
 
         // return cache('settings');
         return session::get('mahmoud');
+    }
+
+
+    function placeOrder()
+    {
+        return view('website.placeOrder');
     }
 }

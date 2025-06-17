@@ -7,18 +7,20 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
         <link rel="stylesheet" href="{{ asset('website/master.css') }}">
 
-        <title>@yield('title', config('app.name'))</title>
+        <title>Document</title>
+        <style>
+        </style>
+    </head>
 
     <body>
 
         <div class="header">
             <nav class="d-flex justify-content-between align-items-center">
                 <div class="me-4 header-logo">
-                    <img src="{{ asset('website/images/logo.jpeg') }}" alt="" width="100">
+                    <img src="{{ asset('website/images/logo.jpeg') }}" alt="">
                 </div>
                 <div class="flex-grow-1">
                     <form action="" method="get" id="search">
@@ -29,38 +31,12 @@
                         </div>
                     </form>
                 </div>
-                <ul class="d-flex justify-content-between flex-row-reverse align-items-center m-3">
+                <ul class="d-flex justify-content-between flex-row-reverse align-items-center">
                     <li class="mx-4"><i class="fas fa-shopping-cart"></i></li>
-                    <li class="mx-4"><a href="{{ route('userWishlist') }}" class="btn text-danger"><i
-                                class="fas fa-heart"></i></a></li>
+                    <li class="mx-4"><i class="fas fa-heart" style="color: red"></i></li>
                     <li class="mx-4"><button class="btn">{{ app()->getLocale() }}/ USD</button></li>
-                    @if (!Auth::check())
-                        <li class="mx-4"><button class="btn" data-bs-toggle="modal"
-                                data-bs-target="#SignInModal"><i class="fas fa-user"></i> Sign In</button></li>
-                    @else
-                        <li class="mx-4 account"><button class="btn"><i class="fas fa-user"></i>
-                                Account</button>
-                        </li>
-                        <div>
-                            <ul>
-                                <li>
-                                    <div class="row">
-                                        <div class="col-5">
-                                            <img src="{{ asset('website/images/1.png') }}" class="user-image"
-                                                alt="">
-                                        </div>
-                                        <div class="col-7">
-                                            <h6>welcome {{ Auth::user()->name }}</h3>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>Account</li>
-                                <li>Account</li>
-                                <li>Account</li>
-                            </ul>
-                        </div>
-                    @endif
-
+                    <li class="mx-4"><button class="btn" data-bs-toggle="modal" data-bs-target="#SignInModal"><i
+                                class="fas fa-user"></i> Sign In</button></li>
                 </ul>
 
             </nav>
@@ -68,7 +44,128 @@
 
 
         <div class="main my-2 p-3">
-            @yield('content')
+            <div class="breadcrumb">
+                <ul>
+                    <li>cart</li>
+                    <li class="active">Place Order</li>
+                    <li>Pay</li>
+                    <li>Order Complete</li>
+                </ul>
+            </div>
+            <div class="d-flex gap-5">
+                <div style="width: 800px;">
+                    <div class="m-3 p-4">
+                        <div class="my-3">
+                            <h3>Shipping Address</h3>
+                        </div>
+                        <div>
+                            <form action="">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <select name="" class="form-select p-3" id="">
+                                                <option value="Palestine">Palestine</option>
+                                                <option value="Egypt">Egypt</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control p-3" placeholder="First Name*">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control p-3" placeholder="First Name*">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3 d-flex">
+                                        <select name="" id="" class="form-select w-25">
+                                            <option value="">Is +972</option>
+                                            <option value="">PS +970</option>
+                                        </select>
+                                        <input type="text" placeholder="Phone Number" class="form-control p-3">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+
+                                            <input type="text" class="form-control p-3" placeholder="City*">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control p-3"
+                                                placeholder="State (Optional)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3">
+                                        <input type="text" placeholder="Address Line" class="form-control p-3">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3">
+                                        <input type="text" placeholder="National ID Number" class="form-control p-3">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3 text-center">
+                                        <button class="btn px-5 py-2 w-75"
+                                            style="background-color: var(--mainColor);color: white">Save</buttonc>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="me-4 summery flex-grow-1">
+                    <div class="px-5">
+                        <h3>Order Summery</h3>
+                        <div class="d-flex justify-content-between p-1">
+                            <p>Items discount</p>
+                            <p class="discount">-US $1.54</p>
+                        </div>
+                        <div class="d-flex justify-content-between p-1">
+                            <p>Items discount</p>
+                            <p>-US $1.54</p>
+                        </div>
+                        <div class="d-flex justify-content-between p-1">
+                            <p>Items discount</p>
+                            <p>-US $1.54</p>
+                        </div>
+                        <div class="d-flex justify-content-between p-1">
+                            <p>Items discount</p>
+                            <p>-US $1.54</p>
+                        </div>
+                        <div class="text-center my-3">
+                            <button class="btn"
+                                style="background-color: var(--mainColor);color: white;padding: 15px 50px;font-weight: 700">checkOut
+                                (
+                                3 )</button>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h5>Coupon Code</h5>
+                        <div class="d-flex gap-4">
+                            <div class="flex-grow-1">
+                                <input type="text" name="" class="form-control  p-2" id="">
+                            </div>
+                            <div class="w-25">
+                                <button class="btn w-100"
+                                    style="background-color: var(--mainColor);color: white">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <footer class="px-5 pt-5" style="background-color: #f0f0f0">
@@ -187,8 +284,7 @@
                                     Apple</button>
                             </div>
                             <div class="text-center">
-                                <p>Don't have an account ? <button type="button" href="" id="signUp">sign
-                                        up</button></p>
+                                <p>Don't have an account ? <a href="" id="signUp">sign up</a></p>
                             </div>
 
                         </form>
@@ -300,70 +396,31 @@
 
             }
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-        <script>
-            const swiper = new Swiper(".mySwiper", {
-                slidesPerView: 5, // ← بدّلها من 3 إلى 5
-                spaceBetween: 20,
-                loop: true,
-                navigation: {
-                    nextEl: ".custom-swiper-next",
-                    prevEl: ".custom-swiper-prev",
-                },
-                breakpoints: {
-                    768: {
-                        slidesPerView: 2,
-                    },
-                    1024: {
-                        slidesPerView: 4,
-                    },
-                    1200: {
-                        slidesPerView: 5, // ← على الشاشات الكبيرة يظهر 5 منتجات
-                    },
-                },
-            });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
         <script>
             let btnSignUp = document.querySelector("#signUp")
             btnSignUp.onclick = (e) => {
-                let currentModal = document.getElementById('SignInModal');
-                var nextModal = new bootstrap.Modal(document.getElementById('SignUpModal'));
-                let modalInstance = bootstrap.Modal.getInstance(currentModal);
-                modalInstance.hide();
-
-                nextModal.show();
-
+                e.preventDefault();
+                alert(1)
             }
         </script>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
-
         <script>
-            document.querySelectorAll('.fa-eye-slash').forEach((el) => {
-                el.onclick = () => {
-                    const modal1El = document.getElementById('SignInModal');
-                    const modal1 = bootstrap.Modal.getInstance(modal1El);
-                    const modal2 = new bootstrap.Modal(document.getElementById('SignUpModal'));
+            function incrementCounter(e, id) {
+                let counter = document.querySelector('#counter-' + id);
+                let count = counter.innerHTML
+                counter.innerHTML = parseInt(count) + 1
+            }
 
-                    // انتظر حتى يُغلق المودال الأول تمامًا
-                    modal1El.addEventListener('hidden.bs.modal', function() {
-                        modal2.show();
-                    }, {
-                        once: true
-                    });
-
-                    modal1.hide();
+            function decrementCounter(e, id) {
+                let counter = document.querySelector('#counter-' + id);
+                let count = counter.innerHTML
+                if (count == 0) {
+                    return;
                 }
-            })
-
-            document.querySelector('.account button')?.addEventListener("click", () => {
-                alert(1);
-            })
+                counter.innerHTML = parseInt(count) - 1
+            }
         </script>
-        <!-- Custom scripts for all pages-->
-        @stack('script')
-
     </body>
 
 </html>

@@ -32,6 +32,10 @@
     border-radius: 15px;
     box-shadow: 1px 1px 1px 1px rgb(223, 222, 222);
 }
+.btn:hover {
+    opacity: 0.8;
+}
+
 nav ul {
     list-style: none;
 }
@@ -53,6 +57,16 @@ nav ul {
 
 #priority h3 {
     font-size: 14px;
+}
+#Privacy {
+    font-weight: bold;
+}
+
+#Privacy::before {
+    content: ".";
+    font-size: 35px;
+    font-weight: bold;
+    margin: 0 10px;
 }
 
 footer ul {
@@ -148,7 +162,7 @@ footer ul li a {
     margin: 20px;
 }
 
-.wishList .active {
+.wishList .delete {
     color: red;
     text-decoration: underline;
 }
@@ -313,6 +327,10 @@ footer ul li a {
 }
 .header-swiper img {
     z-index: -1;
+    position: absolute;
+    /* transform: rotate(-87deg); */
+    transform: scaleX(-1);
+    top: 35px;
 }
 .header-swiper h3 {
     margin: 0 20px;
@@ -395,17 +413,23 @@ footer ul li a {
 
 .pagination ul {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    gap: 20px;
     list-style: none;
 }
-.pagination ul li a {
-    width: 100px;
+
+.pagination ul li .page-link {
+    display: inline;
+    width: 100px !important;
     text-decoration: none;
     color: black;
     font-weight: bold;
+    transition: all 0.2s ease;
+    border: none;
 }
+.page-item.active .page-link,
 .pagination ul li a.active,
-.pagination ul li a:hover {
+.pagination ul li .page-link:hover {
     padding: 5px 10px;
     border-radius: 50%;
     background-color: black;
@@ -476,4 +500,137 @@ table tr td:first-child {
 
 .table li {
     color: #666666;
+}
+
+h4.reviews::after {
+    content: "";
+    height: 2px;
+    width: 130px;
+    background-color: black;
+    position: absolute;
+    bottom: -16px;
+    left: 0px;
+}
+
+.breadcrumb {
+    margin: 0px;
+}
+
+.breadcrumb ul {
+    display: flex;
+    list-style: none;
+    justify-content: start;
+    column-gap: 20px;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+}
+.breadcrumb ul li.active {
+    font-weight: bold;
+    color: #000;
+}
+
+.breadcrumb ul li {
+    color: #aaa;
+}
+.breadcrumb ul li::after {
+    content: " > ";
+    margin-left: 10px;
+    color: gray;
+    font-weight: normal;
+}
+
+.breadcrumb ul li:last-child::after {
+    content: "";
+}
+
+.select-all-cart::after {
+    content: "";
+    border-right: 2px solid gray;
+    right: 60px;
+    margin: 20px;
+}
+
+.cart .delete {
+    color: red;
+    text-decoration: underline;
+}
+
+.delete:hover {
+    opacity: 0.7;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.cart-item {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+    background-color: #f1f1f1;
+    padding: 10px;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.check-item input {
+    width: 20px;
+    height: 20px;
+}
+
+.image-item img {
+    width: 200px;
+    height: 200px;
+    object-fit: fill;
+    border-radius: 15px;
+    box-shadow: 1px 1px 1px 1px rgb(224, 219, 219);
+}
+
+.summery p {
+    margin-bottom: 3px;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.summery div:first-child p:first-child {
+    color: rgb(123, 125, 123);
+}
+
+.discount {
+    color: red;
+}
+
+.account {
+    position: relative;
+}
+.account div {
+    background-color: #ffffff;
+    position: absolute;
+    box-shadow: 0px 0px 5px 1px gray;
+    text-align: center;
+    top: 50px;
+    left: -30px;
+}
+
+.account div ul {
+    padding: 15px 60px;
+}
+.account ul li {
+    padding: 10px auto;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.user-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.shipping {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 10px;
 }

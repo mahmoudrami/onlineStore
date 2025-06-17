@@ -3,7 +3,7 @@
 
 @section('breadcrumb')
     <a href="{{ route('admin.role.index') }}">Roles</a> <span>/</span>
-    <a href="{{ route('admin.role.edit') }}">Create</a>
+    <a href="{{ route('admin.role.create') }}">Create</a>
 @endsection
 
 

@@ -64,10 +64,9 @@ class ProductController extends Controller
 
         return $attributeValue;
     }
+
     public function store(ProductRequest $request)
     {
-
-
 
         $product = new product();
 

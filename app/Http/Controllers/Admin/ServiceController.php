@@ -57,12 +57,13 @@ class ServiceController extends Controller
     {
         $service = new Service();
 
-
         foreach ($this->locales as  $locale) {
             $service->translateOrNew($locale)->name = $request->get('name_' . $locale);
+            $service->translateOrNew($locale)->description = $request->get('description_' . $locale);
         }
 
-        $service->image = uploadImage($request->file('image'), 'services');
+        $service->icon = uploadImage($request->file('image'), 'services');
+        // dd($service->icon);
 
         $service->save();
 

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CartItem extends Model
+class Money extends Model
 {
     //
     use SoftDeletes;
@@ -17,8 +17,8 @@ class CartItem extends Model
 
     protected $guarded = [];
 
-    function product()
+    function bank()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Bank::class);
     }
 }

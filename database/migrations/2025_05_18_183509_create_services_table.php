@@ -23,7 +23,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('service_id')->constrained('services')->cascadeOnDelete();
             $table->string('locale');
-            $table->string('icon');
             $table->string('name');
             $table->string('description');
             $table->timestamps();
