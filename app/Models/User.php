@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Crypt;
 
 class User extends Authenticatable
 {
@@ -59,5 +60,20 @@ class User extends Authenticatable
         } else {
             return asset('images/users/' . $this->image);
         }
+    }
+
+    function setProviderTokenAttribute($value)
+    {
+        $this->attributes['provider_token'] = Crypt::encrypt($value);
+    }
+
+    function getProviderTokenAttribute($value)
+    {
+        return Crypt::decrypt($value);
+    }
+
+    function cart()
+    {
+        return $this->hasOne(Cart::class);
     }
 }

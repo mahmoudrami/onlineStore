@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Language;
 use App\Models\Permission;
 use App\Models\RolePermission;
+use App\Models\Wishlist;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
@@ -43,10 +44,17 @@ class AppServiceProvider extends ServiceProvider
                     }
                 }
             }
+
+            $productIdsInWishlist = [];
+            if (Auth::check()) {
+                $productIdsInWishlist = Wishlist::where('user_id', Auth::user()->id)->pluck('product_id')->toArray();
+            }
+
             $view->with([
                 'adminPermissions' => $adminPermissions,
                 'locales' => Language::active()->get()->pluck('code')->toArray(),
-                'categories' => Category::active()->get()
+                // 'Categories' => Category::active()->get(),
+                'productIdsInWishlist' => $productIdsInWishlist
             ]);
         });
         // view()->share('adminPermissions', $adminPermissions);

@@ -11,11 +11,4 @@ class OrderDetails extends Model
     use SoftDeletes;
 
     protected $guarded = [];
-
-    protected static function booted(): void
-    {
-        static::created(function (Product $product) {
-            $product->quantity = $product->quantity - 1;
-        });
-    }
 }

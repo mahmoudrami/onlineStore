@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class CartItem extends Model
 {
     //
-    use SoftDeletes;
-
     function scopeActive($query)
     {
         return $query->where('stats', 'active');

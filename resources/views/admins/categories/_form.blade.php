@@ -11,6 +11,6 @@
 
 <div class="row">
     <div class="col-6">
-        <x-form.file name='image' label="Select Image Category"></x-form.file>
+        <x-form.file name='image' label="Select Image Category" oldVal="{{ @$category->img_path }}"></x-form.file>
     </div>
 </div>

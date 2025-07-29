@@ -15,17 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
+            $table->text('comment');
             $table->unsignedTinyInteger('rating');
             $table->enum('status', ['active', 'not_active'])->default('not_active');
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
-        Schema::create('review_translations', function (Blueprint $table) {
-            $table->id();
-            $table->string('comment');
-            $table->string('locale');
-            $table->foreignId('review_id')->constrained('reviews')->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -36,7 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('review_translations');
         Schema::dropIfExists('reviews');
     }
 };

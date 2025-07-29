@@ -9,18 +9,16 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Notifications\ChangeProductStatusNotification;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
+
 
 class HomeController extends Controller
 {
     function index()
     {
-        $monthlySales = DB::table('orders')
-            ->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as orders_count, SUM(total_price) as total_sales')
-            ->where('status', 'completed')
-            ->groupBy('year', 'month')
-            ->orderBy('year')
-            ->orderBy('month')
-            ->get();
+
         return view('admins.index');
     }
 
@@ -50,5 +48,55 @@ class HomeController extends Controller
         return false;
 
         return view('admins.index', compact('items')); // return view to the admin dashboard
+    }
+
+    function edit()
+    {
+        // dd(1);
+        $admin = Auth::guard('admin')->user();
+        // return 3;
+        return view('admins.edit', compact('admin'));
+    }
+
+    function editProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'old_password' => 'required_with:password',
+            'password' => 'nullable|min:8|confirmed',
+        ]);
+        /** @var User $admin */
+        $admin = Auth::guard('admin')->user();
+
+        $data = [
+            'name' => $request->name,
+        ];
+
+
+        if ($request->has('password')) {
+            $data['password'] = $request->password;
+        }
+
+        $admin->update($data);
+
+        if ($request->hasFile('image')) {
+            if ($admin->image) {
+                $admin->image()->delete();
+                file::delete(public_path('images/' . $admin->image->path));
+            }
+            $img_name = rand() . time() . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->move(public_path('images'), $img_name);
+            $admin->image()->create([
+                'path' => $img_name,
+            ]);
+        }
+
+
+        return redirect()->back()->with('msg', 'Updated Successflly');
+    }
+    public function checkPassword(Request $request)
+    {
+        // return dd($request->all());
+        return Hash::check($request->password, Auth::guard('admin')->user()->password);
     }
 }

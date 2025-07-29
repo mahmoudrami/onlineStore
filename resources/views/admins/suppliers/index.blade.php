@@ -44,7 +44,7 @@
 
         <tbody>
             @forelse ($suppliers as $supplier)
-                <tr>
+                <tr id="tr-{{ $supplier->id }}">
                     <td><input type="checkbox" name="itemsIds[]" class="chbtn" value="{{ $supplier->id }}"></td>
                     <td>{{ $supplier->id }}</td>
                     <td><img src="{{ $supplier->img_path }}" width="100px" alt="{{ $supplier->name }}"></td>

@@ -10,9 +10,6 @@ class CategoryTranslation extends Model
     //
     use SoftDeletes;
 
-    function scopeActive($query){
-        return $query->where('stats', 'active');
-    }
 
     protected $guarded = [];
 }

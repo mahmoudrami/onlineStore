@@ -22,7 +22,7 @@ class CategoryRequest extends FormRequest
      */
     public function rules(): array
     {
-        $locales = Language::active()->get()->pluck('code')->toArray();
+        $locales = Language::active()->get()->pluck('code')->toArray(); // ['en']
         $data = [];
 
         $imageValidation = 'required';
@@ -31,7 +31,7 @@ class CategoryRequest extends FormRequest
         }
 
         foreach ($locales as $locale) {
-            $data['name_' . $locale] = 'required';
+            $data['name_' . $locale] = 'required'; // name_en
         }
 
         $data['image'] = $imageValidation;

@@ -44,7 +44,7 @@
 
         <tbody>
             @forelse ($reviews as $review)
-                <tr>
+                <tr id="tr-{{ $review->id }}">
                     <td><input type="checkbox" name="itemsIds[]" class="chbtn" value="{{ $review->id }}"></td>
                     <td>{{ $review->id }}</td>
                     <td><img src="{{ $review->img_path }}" width="100px" alt="{{ $review->name }}"></td>

@@ -25,14 +25,10 @@ class Product extends Model
     protected static function booted()
     {
         static::addGlobalScope('supplier', function ($query) {
-            // هادي لو بدي اعرض كل اشي للادمن هي طريقة بس في طريقة بعملها في الكنترولر
-            // withoutGlobalScopes() بلغي كل اشي انا عاملو هادي
-            // withoutGlobalScope(name where define global scope) هادي بيلغي بس الي انت بتحددو
-            if (Auth::guard('admin')->check()) {
+            if (Auth::guard('supplier')->check())
+                return $query->where('supplier_id', Auth::guard('supplier')->user()->id);
+            else
                 return $query;
-            }
-
-            return $query->where('supplier_id', Auth::guard('supplier')->user()->id);
         });
     }
 
@@ -56,6 +52,11 @@ class Product extends Model
         return $this->belongsTo(Supplier::class);
     }
 
+    function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
     function attributeValues()
     {
         return $this->belongsToMany(AttributeValue::class, 'product_attribute_values');
@@ -63,7 +64,7 @@ class Product extends Model
 
     function getSoldAttribute()
     {
-        return OrderDetails::where('product_id', $this->id)->count();
+        return OrderDetails::where('product_id', $this->id)->sum('quantity');
     }
 
     function getCountWishListAttribute()
@@ -86,5 +87,20 @@ class Product extends Model
             return 0;
         }
         return ceil($sumRate / $countRate);
+    }
+
+    function getCountRateAttribute()
+    {
+        return Review::where('product_id', $this->id)->count();
+    }
+
+    function getTodayDiscount()
+    {
+        $day = now()->day; // 1 إلى 31
+
+        // مثال: خصم بسيط حسب رقم اليوم
+        $discountPercent = $day % 5 + 1; // سيعطي خصومات 1% إلى 5% متغيرة يومياً
+
+        return ($discountPercent / 100) * $this->price;
     }
 }

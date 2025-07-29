@@ -10,7 +10,7 @@
             <meta name="author" content="">
             <meta name="csrf-token" content="{{ csrf_token() }}">
 
-            <title>@yield('title')</title>
+            <title>@yield('title', config('app.name'))</title>
 
             <!-- Custom fonts for this template-->
             <link href="{{ asset('backend/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet"
@@ -256,18 +256,11 @@
                                     <!-- Dropdown - User Information -->
                                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                         aria-labelledby="userDropdown">
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{ route('admin.edit') }}">
                                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Profile
                                         </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Settings
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Activity Log
-                                        </a>
+
                                         <div class="dropdown-divider"></div>
                                         <form action="{{ route('admin.logout') }}" method="POST">
                                             @csrf

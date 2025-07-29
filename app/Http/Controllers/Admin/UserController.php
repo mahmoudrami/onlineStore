@@ -35,7 +35,6 @@ class UserController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->mobile = $request->mobile;
         $user->password = $request->password;
 
         if ($request->hasFile('image')) {

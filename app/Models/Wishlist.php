@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Wishlist extends Model
 {
     //
-    use SoftDeletes;
 
-    function scopeActive($query){
+    function scopeActive($query)
+    {
         return $query->where('stats', 'active');
     }
 

@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Translatable;
+    protected $translatedAttributes = ['name'];
     protected $guarded = [];
 
 

@@ -12,10 +12,12 @@ use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
+
     private $locales;
     public function __construct()
     {
-        $this->locales = Language::all()->pluck('code')->toArray();
+        $this->locales = Language::all()->pluck('code')->toArray(); // code ['en']
+
         view()->share(['locales' => $this->locales]);
     }
 
@@ -24,22 +26,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $routes = Route::getRoutes();
-
-        $resourceNames = collect($routes)->filter(function ($route) {
-            return $route->getName() && str_starts_with($route->getName(), 'admin.') && str_contains($route->getName(), '.index');
-        })->map(function ($route) {
-            // مثال: admin.products.index => products
-            $name = $route->getName(); // admin.products.index
-            return explode('.', $name)[1]; // products
-        })->unique()->values();
-
-
-        // dd('contact');
-        // dd($this->locales);
-        $categories = Category::latest('id')->paginate(10);
+        $categories = Category::latest('id')->get(); // 20 19 18 17 // 1 2 3 4
 
         return view('admins.categories.index', compact('categories'));
+        // return view('admins.categories.index', [
+        //     'categories' => $categories
+        // ]);
     }
 
     /**
@@ -53,16 +45,19 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(CategoryRequest $request)
     {
+
         $category = new Category();
 
 
-        foreach ($this->locales as  $locale) {
+        foreach ($this->locales as  $locale) { // en
             $category->translateOrNew($locale)->name = $request->get('name_' . $locale);
         }
 
-        $category->image = uploadImage($request->file('image'), 'categories');
+        $category->image = uploadImage($request->file('image'), 'categories'); // 12312332432476247125.png
+        // $category->status = 'active';
 
         $category->save();
 
@@ -71,17 +66,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit(Category $category) // {id} => $id
     {
         return view('admins.categories.edit', compact('category'));
     }

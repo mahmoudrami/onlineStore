@@ -2,69 +2,137 @@
 
 namespace App\Http\Controllers\Site;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Services\PaymentService;
 use App\Models\Cart;
+use App\Models\Order;
+use App\Models\Product;
+use Error;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
+use Stripe\Charge;
+use Stripe\StripeClient;
 
 class PaymentController extends Controller
 {
 
-    private $paymentService;
-    public function __construct(PaymentService $paymentService)
+    function create(Cart $cart)
     {
-        $this->paymentService = $paymentService;
+        if (count($cart->items) == 0) {
+            return redirect()->route('shop');
+        }
+        return view('website.checkout', compact('cart'));
     }
 
-    public function payment($id)
+    function store(Request $request)
     {
-        // $cart = Cart::findOrFail($id);
-        // $user = $cart->user;
-        // dd(3);
-        $data = [
-            'CustomerName' => 'mahmoud',
-            'NotificationOption' => 'LNK',
-            'InvoiceValue' => 20,
-            'CustomerEmail' => 'momo2003.mo2@gmail.com',
-            'CallBackUrl' => route('callBackUrl'),
-            'ErrorUrl' => route('errorUrl'),
-            'Language' => app()->getLocale(),
-            'DisplayCurrencyIso' => 'SAR',
-        ];
 
+        $stripe = new StripeClient(config('services.stripe.secret_key'));
 
-        $response =  $this->paymentService->sendPayment($data);
-        return $response['Data']['InvoiceURL'];
+        $cart = Cart::findOrFail($request->cart_id);
+        $amount = explode('.', $cart->estimated_total)[0];
+        try {
+            $paymentIntent = $stripe->paymentIntents->create([
+                'amount' => $amount,
+                'currency' => 'usd',
+                'description' => 'mahmoud rami aqel',
+                'receipt_email' =>  'momo.2003mo2@gmail.com',
+                'metadata' => [
+                    'cart_id' => $cart->id,
+                    'name user' => 'farash mahmoud',
+                    'custom_note' => 'شراء من التطبيق X',
+                ],
+                'automatic_payment_methods' => [
+                    'enabled' => true,
+                ]
+            ]);
+            return [
+                'clientSecret' => $paymentIntent->client_secret,
+            ];
+        } catch (Error $e) {
+            return Response::json([
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
-    public function getPaymentStatus(Request $request)
+    function success(Request $request)
     {
-        // return $request;
-        return $request->paymentId;
-        $data = [];
-        $data['key'] = $request->paymentId;
-        $data['key-type'] = 'paymentId';
+        $stripe = new StripeClient(config('services.stripe.secret_key'));
 
-        return $data;
+        $paymentIntentId = $request->payment_intent;
 
-        return $this->paymentService->getPaymentStatus($data);
+        $paymentIntent = $stripe->paymentIntents->retrieve($paymentIntentId);
+
+        $chargeId = $paymentIntent->latest_charge;
+
+        $charge = $stripe->charges->retrieve($chargeId);
+
+
+
+        if ($paymentIntent->status !== 'succeeded') {
+            return response()->json(['error' => 'Payment not completed.'], 400);
+        }
+
+        try {
+            $cartId = $paymentIntent['metadata']['cart_id'];
+            $cart = Cart::findOrFail($cartId);
+
+            $cartItems = $cart->items;
+            DB::beginTransaction();
+            $order = Order::create([
+                'user_id' => $cart->user_id,
+                'total_price' => $cart->amount,
+                'status' => 'paid'
+            ]);
+
+
+            $order->items()->createMany(
+                $cartItems->map(function ($item) use ($order) {
+                    return [
+                        'quantity' => $item->quantity,
+                        'price' => $item->price,
+                        'product_id' => $item->product_id
+                    ];
+                })->toArray()
+            );
+
+
+            if (Session::has('placeOrder')) {
+                $data = Session::get('placeOrder');
+                $placeOrder = $order->placeOrder()->create($data);
+                Session::pull('placeOrder');
+                $order->update([
+                    'place_order_id' => $placeOrder->id
+                ]);
+            }
+
+            $orderItems = $order->items();
+
+            foreach ($orderItems as $orderItem) {
+                $product = Product::findOrFail($orderItem->product_id);
+                $product->quantity -= $orderItem->quantity;
+                $product->save();
+            }
+
+
+            $cart->items()->delete();
+            $cart->delete();
+
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+
+        return redirect()->route('homePage');
     }
 
-
-    public function callBackUrl(Request $request)
+    function cancel(Request $request)
     {
-        // return $request;
-        $data = [];
-        $data['key'] = $request->paymentId;
-        $data['keyType'] = 'paymentId';
-
-        return $data;
-        return $this->paymentService->getPaymentStatus($data);
-    }
-
-    public function errorUrl(Request $request)
-    {
-        return $request;
+        return $request->all();
     }
 }

@@ -6,6 +6,11 @@
     margin: 0;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+}
+
 .header {
     margin: 5px auto 0 auto;
 }
@@ -105,13 +110,23 @@ footer ul li a {
     font-weight: bold;
     margin-bottom: 10px;
 }
-.modal-body input {
+.modal-body input[type="text"],
+.modal-body input[type="email"],
+.modal-body input[type="password"] {
     display: block;
     width: 100%;
     border-radius: 25px;
     padding: 5px 10px;
     border: none;
     box-shadow: 1px 1px 1px 1px rgb(227, 226, 226);
+}
+
+.modal-body input[type="radio"] {
+    width: 15px;
+    height: 15px;
+}
+.form-check label {
+    margin: 0;
 }
 
 .wrapper-password {
@@ -136,7 +151,25 @@ footer ul li a {
     background-color: white;
     z-index: 2;
 }
+.divider {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+
+.divider span {
+    margin: 0 10px;
+    color: #555;
+    font-weight: bold;
+}
 .login-with {
     text-align: center;
 }
@@ -145,7 +178,7 @@ footer ul li a {
     margin: 10px auto;
     padding: 10px 20px;
 }
-.login-with button i {
+.login-wit h button i {
     margin-right: 3px;
 }
 .modal-body a {
@@ -212,9 +245,8 @@ footer ul li a {
 .product-image i {
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 20px;
     font-size: 20px;
-    color: red;
     background-color: white;
     padding: 5px;
     border-radius: 50%;
@@ -262,6 +294,7 @@ footer ul li a {
     transition: 0.3s;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: #000;
+    text-decoration: none;
 }
 
 .category-btn:hover,
@@ -280,6 +313,10 @@ footer ul li a {
     align-items: center;
     justify-content: center;
     margin: auto;
+}
+
+.category-circle a {
+    height: 100%;
 }
 
 .category-circle img {
@@ -343,6 +380,7 @@ footer ul li a {
 .btn-settings {
     margin: 20px;
 }
+.btn-settings a,
 .btn-settings button {
     display: block;
     margin: 20px 40px;
@@ -351,14 +389,16 @@ footer ul li a {
     text-align: start;
     background-color: transparent;
     border: none;
+    text-decoration: none;
+    color: black;
 }
-.btn-settings button.active {
+.btn-settings a.active {
     border: 1px solid blue;
     border-radius: 30px;
 }
 
 .delete-account {
-    color: red;
+    color: red !important;
 }
 
 .delete-account i {
@@ -373,6 +413,9 @@ footer ul li a {
     border-radius: 10px;
     font-weight: 500;
     width: 100%;
+}
+.upload-image .upload-icon {
+    top: 65px;
 }
 .image-user {
     width: 150px;
@@ -550,7 +593,9 @@ h4.reviews::after {
     margin: 20px;
 }
 
-.cart .delete {
+.cart-items .delete button {
+    border: none;
+    background-color: transparent;
     color: red;
     text-decoration: underline;
 }
@@ -587,7 +632,12 @@ h4.reviews::after {
     border-radius: 15px;
     box-shadow: 1px 1px 1px 1px rgb(224, 219, 219);
 }
-
+.account img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
 .summery p {
     margin-bottom: 3px;
     font-weight: 500;
@@ -602,27 +652,6 @@ h4.reviews::after {
     color: red;
 }
 
-.account {
-    position: relative;
-}
-.account div {
-    background-color: #ffffff;
-    position: absolute;
-    box-shadow: 0px 0px 5px 1px gray;
-    text-align: center;
-    top: 50px;
-    left: -30px;
-}
-
-.account div ul {
-    padding: 15px 60px;
-}
-.account ul li {
-    padding: 10px auto;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
 .user-image {
     width: 50px;
     height: 50px;
@@ -633,4 +662,30 @@ h4.reviews::after {
     font-size: 16px;
     font-weight: 500;
     margin: 0 10px;
+}
+
+.order-btn {
+    background-color: var(--mainColor);
+    color: white;
+    padding: 15px 50px;
+    font-weight: 700;
+}
+
+.order-btn:hover {
+    background-color: transparent;
+    border: 1px solid var(--mainColor);
+}
+.user-review {
+    background-color: #f6f5f5;
+}
+
+.reset-password input {
+    font-size: 22px;
+    text-align: center;
+}
+
+.counter {
+    background-color: transparent;
+    border: none;
+    width: 60px;
 }

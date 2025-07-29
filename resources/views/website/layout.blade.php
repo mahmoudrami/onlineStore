@@ -7,18 +7,21 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
         <link rel="stylesheet" href="{{ asset('website/master.css') }}">
 
+        <link rel="shortcut icon" href="{{ asset('images/الايقونة.png') }}">
+
         <title>@yield('title', config('app.name'))</title>
+        @stack('css')
 
     <body>
 
         <div class="header">
             <nav class="d-flex justify-content-between align-items-center">
                 <div class="me-4 header-logo">
-                    <img src="{{ asset('website/images/logo.jpeg') }}" alt="" width="100">
+                    <a href="{{ route('homePage') }}"><img src="{{ asset('website/images/logo.jpeg') }}" alt=""
+                            width="100"></a>
                 </div>
                 <div class="flex-grow-1">
                     <form action="" method="get" id="search">
@@ -30,35 +33,42 @@
                     </form>
                 </div>
                 <ul class="d-flex justify-content-between flex-row-reverse align-items-center m-3">
-                    <li class="mx-4"><i class="fas fa-shopping-cart"></i></li>
+                    <li class="mx-4"><a href="{{ route('cart') }}"><i class="fas fa-shopping-cart"></i></a></li>
                     <li class="mx-4"><a href="{{ route('userWishlist') }}" class="btn text-danger"><i
                                 class="fas fa-heart"></i></a></li>
-                    <li class="mx-4"><button class="btn">{{ app()->getLocale() }}/ USD</button></li>
                     @if (!Auth::check())
-                        <li class="mx-4"><button class="btn" data-bs-toggle="modal"
-                                data-bs-target="#SignInModal"><i class="fas fa-user"></i> Sign In</button></li>
+                        <li class="mx-4"><a href="{{ route('login') }}" class="btn"><i class="fas fa-user"></i>
+                                Sign In</a></li>
                     @else
-                        <li class="mx-4 account"><button class="btn"><i class="fas fa-user"></i>
-                                Account</button>
+                        <li class="mx-4 text-center">
+                            <div class="dropdown text-center account">
+                                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Account
+                                </button>
+                                <ul class="dropdown-menu text-left" style="width: 280px;left: -75px">
+                                    <li class="dropdown-item">
+                                        <div class="d-flex justify-content-between gap-1">
+                                            <div>
+                                                <img width="20px" height="20px"
+                                                    src="{{ Auth::guard('web')->user()->img_path }}" alt="">
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                {{ Auth::guard('web')->user()->name }}
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <hr>
+                                    <li><a class="dropdown-item" href="{{ route('profile') }}"><i
+                                                class="fas fa-user-circle"></i> My
+                                            Account</a></li>
+
+                                    <li><a class="dropdown-item" href="{{ route('userWishlist') }}"><i
+                                                class="fa fa-heart"></i> Wish
+                                            List</a></li>
+                                </ul>
+                            </div>
                         </li>
-                        <div>
-                            <ul>
-                                <li>
-                                    <div class="row">
-                                        <div class="col-5">
-                                            <img src="{{ asset('website/images/1.png') }}" class="user-image"
-                                                alt="">
-                                        </div>
-                                        <div class="col-7">
-                                            <h6>welcome {{ Auth::user()->name }}</h3>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>Account</li>
-                                <li>Account</li>
-                                <li>Account</li>
-                            </ul>
-                        </div>
                     @endif
 
                 </ul>
@@ -125,181 +135,15 @@
                 </div>
             </div>
             <hr>
-            <div class="d-flex justify-content-around mt-4">
+            <div class="d-flex justify-content-around align-items-center mt-4">
                 <p>copyright © 2025-Vexor Inc. All right reserved.</p>
                 <p>Dont share my personal information <span id="Privacy">Privacy settings</span></p>
             </div>
         </footer>
 
 
+        {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script> --}}
 
-        {{-- Sign In --}}
-        <div class="modal fade" id="SignInModal" tabindex="-1" role="dialog" aria-labelledby="SignIn"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div style="">
-                            <button class="close" style="border: none" type="button" data-bs-dismiss="modal"
-                                aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div>
-                            <h5 class="modal-title" id="SignIn">Sign In</h5>
-                        </div>
-                    </div>
-                    <div class="modal-body">
-                        <form action="" method="POST">
-                            <div class="mb-1">
-                                <label for="email">Email</label>
-                                <input type="email" name="email">
-                            </div>
-
-                            <div class="mb-1 wrapper-password">
-                                <label for="password">Password</label>
-                                <div>
-                                    <input type="password" name="password">
-                                    <i class="fas fa-eye-slash"></i>
-                                </div>
-                            </div>
-
-                            <div class="mb-1 p-2">
-                                <input type="checkbox" name="remember_me" style="display: inline;width: 25px;">
-                                <label for="remember_me">keep me logged in</label>
-                            </div>
-                            <div class="mb-3">
-                                <button class="btn d-block mx-auto"
-                                    style="background-color: var(--mainColor);color: white">Sign
-                                    In</button>
-                            </div>
-                            <div class="signOR my-3">
-                                <button type="button">Or</button>
-                                <hr>
-                            </div>
-
-                            <div class="mb-2 login-with">
-                                <button type="button" class="btn"><i class="fas fa-google"></i> Continue with
-                                    google</button>
-                                <button type="button" class="btn"><i class="fas fa-facebook"></i> Continue with
-                                    facebook</button>
-                                <button type="button" class="btn"><i class="fas fa-app-store"></i> Continue with
-                                    Apple</button>
-                            </div>
-                            <div class="text-center">
-                                <p>Don't have an account ? <button type="button" href="" id="signUp">sign
-                                        up</button></p>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Sign In --}}
-        <div class="modal fade" id="SignUpModal" tabindex="-1" role="dialog" aria-labelledby="SignUpModal"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header d-flex justify-content-between">
-                        <h5 class="modal-title" id="SignUpModal">Sign Up</h5>
-                        <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <form action="{{ route('registerUser') }}" method="POST" id="FormRegister">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="bm-1">
-                                <label for="name">Your Name</label>
-                                <input type="text" name="name" class="register">
-                            </div>
-
-                            <div class="bm-1">
-                                <label for="mobile">Mobile</label>
-                                <input type="text" name="mobile" class="register">
-                            </div>
-                            <div class="bm-1">
-                                <label for="email">Email</label>
-                                <input type="email" name="email" class="register">
-                            </div>
-
-                            <div class="bm-1">
-                                <label for="password">Password</label>
-                                <input type="password" name="password" class="register">
-                            </div>
-                            <div class="bm-1">
-                                <label for="password_confirmation">Password Again</label>
-                                <input type="password" name="password_confirmation" class="register">
-                            </div>
-                            <div class="bm-1">
-                                <label for="type">Type User</label>
-                                <label class="ms-3">User</label>
-                                <input type="radio" name="type" value="user" class="p-1 register">
-                                <label class="ms-1">Supplier</label>
-                                <input type="radio" name="type" value="supplier" class="p-1 register">
-                            </div>
-                            <div class="mb-1">
-                                <label>A gree for use website</label>
-                                <input type="checkbox" name="condition" id="condition">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
-                            <button class="btn btn-primary" disabled id="btn_register"
-                                type="submit">Register</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            let checkBox = document.querySelector('#condition');
-            checkBox.onchange = () => {
-                if (checkBox.checked) {
-                    btn_register.removeAttribute('disabled');
-                } else {
-                    btn_register.setAttribute('disabled', 'disabled');
-                }
-            }
-
-            let form = document.querySelector('#FormRegister');
-            form.onsubmit = (e) => {
-                e.preventDefault();
-                let inputs = form.querySelectorAll('input');
-                let data = new FormData(form);
-                let errorsInputs = [];
-                let typeChecked = false;
-
-                inputs.forEach(el => {
-                    if (el.value == '') {
-                        if (el.name == 'password_confirmation') {
-                            let password = form.querySelector('[name=password]');
-                            if (el.value != password.value) {
-                                errorsInputs.push('The password not matching');
-                            }
-                            return;
-                        }
-                        errorsInputs.push('the field ' + el.name + ' is required');
-                    }
-
-                    if (el.checked && el.name === 'type') {
-                        typeChecked = true;
-                    }
-                })
-                if (!typeChecked) {
-                    errorsInputs.push('Please select a type');
-                }
-                if (errorsInputs.length > 0) {
-                    console.log(errorsInputs);
-                } else {
-                    form.submit();
-                }
-
-            }
-        </script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
         <script>
             const swiper = new Swiper(".mySwiper", {
@@ -324,44 +168,98 @@
             });
         </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script>
-            let btnSignUp = document.querySelector("#signUp")
-            btnSignUp.onclick = (e) => {
-                let currentModal = document.getElementById('SignInModal');
-                var nextModal = new bootstrap.Modal(document.getElementById('SignUpModal'));
-                let modalInstance = bootstrap.Modal.getInstance(currentModal);
-                modalInstance.hide();
 
-                nextModal.show();
+        {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script> --}}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
-            }
-        </script>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 
         <script>
             document.querySelectorAll('.fa-eye-slash').forEach((el) => {
                 el.onclick = () => {
-                    const modal1El = document.getElementById('SignInModal');
-                    const modal1 = bootstrap.Modal.getInstance(modal1El);
-                    const modal2 = new bootstrap.Modal(document.getElementById('SignUpModal'));
+                    let parent = el.closest('div');
 
-                    // انتظر حتى يُغلق المودال الأول تمامًا
-                    modal1El.addEventListener('hidden.bs.modal', function() {
-                        modal2.show();
-                    }, {
-                        once: true
-                    });
+                    let password_input = parent.querySelector('input');
+                    if (password_input.type == 'password') {
+                        password_input.setAttribute('type', 'text');
+                        el.classList.remove('fa-eye-slash')
+                        el.classList.add('fa-eye')
 
-                    modal1.hide();
+                    } else {
+                        password_input.setAttribute('type', 'password');
+                        el.classList.add('fa-eye-slash')
+                        el.classList.remove('fa-eye')
+                    }
                 }
             })
+        </script>
 
-            document.querySelector('.account button')?.addEventListener("click", () => {
-                alert(1);
+        <script>
+            function showImage(e) {
+                const [file] = e.target.files
+                if (file) {
+                    prevImage.src = URL.createObjectURL(file)
+                }
+            }
+        </script>
+
+        <script>
+            document.querySelectorAll('.wishList').forEach(el => {
+                el.onclick = () => {
+                    let id = el.getAttribute('data-id')
+                    $.ajax({
+                        method: 'POST',
+                        url: "{{ route('ItemToWishlist') }}" + '/' + id,
+                        data: {
+                            '_token': '{{ csrf_token() }}',
+                        },
+                        success: function(res) {
+                            if (res.status == 201) {
+                                if (!el.classList.contains('text-danger')) {
+                                    el.classList.add('text-danger')
+                                }
+                            } else {
+                                if (el.classList.contains('text-danger')) {
+                                    el.classList.remove('text-danger')
+                                }
+                            }
+                        },
+                        error: function(err) {
+                            if (err.status == 401) {
+                                window.location.href = '{{ route('login') }}'
+                            }
+                        }
+                    });
+                }
+            });
+        </script>
+
+        <script>
+            document.querySelectorAll('.cart').forEach(el => {
+                console.log(document.querySelectorAll('.cart'));
+
+                el.onclick = () => {
+                    let id = el.getAttribute('data-id');
+                    alert('cart')
+                    $.ajax({
+                        method: 'POST',
+                        url: "{{ route('addItemToCart') }}" + '/' + id,
+                        data: {
+                            '_token': '{{ csrf_token() }}',
+                        },
+                        success: function(res) {
+                            if (res.status == 200) {
+                                alert(res.data)
+                            }
+                        },
+                        error: function(err) {
+                            if (err.status == 401) {
+                                window.location.href = '{{ route('login') }}'
+                            }
+                        }
+                    });
+                }
             })
         </script>
-        <!-- Custom scripts for all pages-->
         @stack('script')
 
     </body>

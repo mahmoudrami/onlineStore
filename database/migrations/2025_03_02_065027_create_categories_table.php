@@ -13,20 +13,19 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
-            $table->string('parent_id')->nullable();
+            $table->string('image'); // 255
             $table->enum('status', ['active', 'not_active'])->default('not_active');
-            $table->timestamps();
-            $table->softDeletes();
+            $table->timestamps(); // updated_at , created_at
+            $table->softDeletes(); // deleted_at
         });
 
         Schema::create('category_translations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
-            $table->string('locale');
-            $table->string('name');
-            $table->timestamps();
-            $table->softDeletes();
+            $table->string('locale'); // en // ar
+            $table->string('name'); // sport // رياضة
+            $table->timestamps(); // created_at and updated_at
+            $table->softDeletes(); // deleted_at
         });
     }
 

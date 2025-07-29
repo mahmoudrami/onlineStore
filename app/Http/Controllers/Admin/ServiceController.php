@@ -24,19 +24,6 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $routes = Route::getRoutes();
-
-        $resourceNames = collect($routes)->filter(function ($route) {
-            return $route->getName() && str_starts_with($route->getName(), 'admin.') && str_contains($route->getName(), '.index');
-        })->map(function ($route) {
-            // مثال: admin.products.index => products
-            $name = $route->getName(); // admin.products.index
-            return explode('.', $name)[1]; // products
-        })->unique()->values();
-
-
-        // dd('contact');
-        // dd($this->locales);
         $services = Service::latest('id')->paginate(10);
 
         return view('admins.services.index', compact('services'));
@@ -71,13 +58,6 @@ class ServiceController extends Controller
         return redirect()->route('admin.service.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -95,6 +75,7 @@ class ServiceController extends Controller
 
         foreach ($this->locales as  $locale) {
             $service->translateOrNew($locale)->name = $request->get('name_' . $locale);
+            $service->translateOrNew($locale)->description = $request->get('description_' . $locale);
         }
 
         if ($request->hasFile('image')) {

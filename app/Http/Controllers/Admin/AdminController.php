@@ -25,7 +25,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        $roles = Role::active()->select('id', 'name')->get();
+        $roles = Role::active()->get();
         return view('admins.admins.create', compact('roles'));
     }
 
@@ -63,7 +63,7 @@ class AdminController extends Controller
      */
     public function edit(Admin $admin)
     {
-        $roles = Role::active()->select('id', 'name')->get();
+        $roles = Role::active()->get();
         return view('admins.admins.edit', compact('admin', 'roles'));
     }
 

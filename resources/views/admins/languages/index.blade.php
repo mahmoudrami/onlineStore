@@ -41,7 +41,7 @@
 
         <tbody>
             @forelse ($languages as $language)
-                <tr>
+                <tr id="tr-{{ $language->id }}">
                     <td><input type="checkbox" name="itemsIds[]" class="chbtn" value="{{ $language->id }}"></td>
                     <td>{{ $language->id }}</td>
                     <td>{{ $language->name }}</td>
@@ -55,7 +55,8 @@
                     <td>
                         <a href="{{ route('admin.language.edit', $language->id) }}" class="btn btn-sm btn-primary"><i
                                 class="fas fa-edit"></i></a>
-                        <form action="{{ route('admin.language.destroy', $language->id) }}" method="POST" class="d-inline">
+                        <form action="{{ route('admin.language.destroy', $language->id) }}" method="POST"
+                            class="d-inline">
                             @csrf
                             @method('delete')
                             <button onclick="deleteItem(event)" class="btn btn-sm btn-danger"><i

@@ -67,6 +67,7 @@
     </form>
 @endsection
 
+
 @section('js')
     <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
     <script>
@@ -76,7 +77,7 @@
                 e.target.parentElement.remove();
 
             } else {
-                url = "{{ route('supplier.product.delete_image') }}";
+                url = "{{ route('admin.product.delete_image') }}";
                 axios
                     .post(url + '/' + id)
                     .then(function(response) {
@@ -90,4 +91,39 @@
 
         }
     </script>
+
+
+
+    <script>
+        function deleteRow(event) {
+            event.preventDefault();
+            event.target.closest('tr').remove();
+        }
+
+        function addRow(attributeName) {
+            const slug = attributeName.toLowerCase().replace(/ /g, '-');
+            const tbody = document.getElementById('rows_' + slug);
+            const locales = @json($locales);
+
+            let row = document.createElement('tr');
+            let cells = '';
+
+            locales.forEach(locale => {
+                cells += `
+                    <td><input type="text" name="attributeValue[${attributeName}][${locale}][]" class="form-control"></td>
+                `;
+            });
+
+            cells += `<td><button type="button" onclick="deleteRow(event)" class="btn btn-sm btn-danger">X</button></td>`;
+            row.innerHTML = cells;
+            tbody.appendChild(row);
+        }
+
+        function toggleAttributeTable(slug) {
+            const checkbox = document.getElementById('check_' + slug);
+            const tableDiv = document.getElementById('table_' + slug);
+            tableDiv.style.display = checkbox.checked ? 'block' : 'none';
+        }
+    </script>
+
 @endsection

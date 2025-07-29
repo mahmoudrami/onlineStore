@@ -12,17 +12,6 @@
         <h1 class="h3 mb-4 text-gray-800">All Products</h1>
         <div class="btn-group">
 
-            <button class="btn btn-danger event" disabled id="delete-items" data-model="Category" data-bs-toggle="modal"
-                disabled data-bs-target="#DeleteModal">{{ __('Delete') }}</button>
-
-
-            <button data-bs-toggle="modal" data-bs-target="#NotActiveModal" disabled class="btn btn-secondary event">Not
-                Active</button>
-            <button class="btn btn-dark event" data-bs-toggle="modal" disabled data-bs-target="#ActiveModal"
-                disabled>Active</button>
-
-
-
             <a href="{{ route('supplier.product.create') }}" class="btn btn-primary">Add New</a>
 
         </div>

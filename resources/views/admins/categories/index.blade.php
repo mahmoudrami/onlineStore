@@ -2,11 +2,6 @@
 
 @section('title', 'Categories')
 
-
-@section('css')
-
-@endsection
-
 @section('content')
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="h3 mb-4 text-gray-800">All Categories</h1>
@@ -42,7 +37,7 @@
 
         <tbody>
             @forelse ($categories as $category)
-                <tr>
+                <tr id="tr-{{ $category->id }}">
                     <td><input type="checkbox" name="itemsIds[]" class="chbtn" value="{{ $category->id }}"></td>
                     <td>{{ $category->id }}</td>
                     <td><img src="{{ $category->img_path }}" width="150px" alt="{{ $category->name }}"></td>

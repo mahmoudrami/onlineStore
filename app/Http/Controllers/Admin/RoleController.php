@@ -3,13 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Role;
+use App\Models\Language;
 use App\Models\Permission;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\RolePermission;
+use App\Http\Controllers\Controller;
 
 class RoleController extends Controller
 {
+
+    private $locales;
+    public function __construct()
+    {
+        $this->locales = Language::all()->pluck('code')->toArray(); // code ['en']
+
+        view()->share(['locales' => $this->locales]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -35,12 +44,14 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:roles,name'
+            'name' => 'required|unique:role_translations,name'
         ]);
 
 
         $role = new Role();
-        $role->name = $request->name;
+        foreach ($this->locales as  $locale) {
+            $role->translateOrNew($locale)->name = $request->get('name');
+        }
         $role->save();
 
         foreach ($request->permissions as $permission) {

@@ -21,4 +21,9 @@ class Order extends Model
     {
         return $this->hasMany(OrderDetails::class);
     }
+
+    function placeOrder()
+    {
+        return $this->belongsTo(PlaceOrder::class);
+    }
 }

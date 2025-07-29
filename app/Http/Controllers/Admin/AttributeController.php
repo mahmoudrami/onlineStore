@@ -62,6 +62,8 @@ class AttributeController extends Controller
             $attribute->translateOrNew($locale)->name = $request->get('name_' . $locale);
         }
 
+        $attribute->is_multiple = $request->is_multiple;
+
 
         $attribute->save();
 

@@ -16,21 +16,24 @@ use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\ShippingController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-// Route::prefix(LaravelLocalization::setLocale())->group(function () {
 Route::prefix('admin/')->name('admin.')->group(function () {
 
     require __DIR__ . '/authAdmin.php';
-    // admin add for
 
     Route::middleware(['is_admin', 'has_permission'])->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('homePage');
 
-        Route::resource('user', UserController::class);
+        Route::get('edit', [HomeController::class, 'edit'])->name('edit');
+        Route::put('edit', [HomeController::class, 'editProfile'])->name('editProfile');
+        Route::post('checkPassword', [HomeController::class, 'checkPassword'])->name('checkPassword');
+
+        Route::resource('user', UserController::class); // index , create , store , edit/{id} , update/{id} ,destroy{id}
         Route::resource('supplier', SupplierController::class);
         Route::resource('service', ServiceController::class);
-        Route::resource('category', CategoryController::class);
+        Route::resource('category', CategoryController::class); //
         Route::resource('product', ProductController::class);
         Route::resource('coupon', CouponController::class);
         Route::resource('order', OrderController::class);
@@ -39,6 +42,7 @@ Route::prefix('admin/')->name('admin.')->group(function () {
         Route::resource('language', LanguageController::class);
         Route::resource('review', ReviewController::class);
         Route::resource('attribute', AttributeController::class);
+        Route::resource('shipping', ShippingController::class);
 
         Route::post('changeStatus/{model}', [HomeController::class, 'changeStatus'])->name('changeStatus');
         Route::post('product/delete-image/{id?}', [ProductController::class, 'delete_image'])->name('product.delete_image');

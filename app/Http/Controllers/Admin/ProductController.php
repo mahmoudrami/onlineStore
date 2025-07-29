@@ -119,14 +119,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Product $product)
@@ -153,17 +145,6 @@ class ProductController extends Controller
                 }
             }
         }
-
-        // foreach ($attributesProduct as $key => $translations) {
-        //     for ($i = 0; $i < count($translations['ar']); $i++) {
-
-        //         dd($translations['en'][$i] ?? '');
-        //     }
-        // }
-
-        // unset($attributesProduct['Color']);
-
-        // dd($product->attributeValues[0]->attribute);
         return view('admins.products.edit', compact('product', 'categories', 'suppliers', 'attributes', 'attributesProduct'));
     }
 

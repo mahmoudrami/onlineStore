@@ -6,10 +6,13 @@
         @foreach ($categories as $category)
             <div class="category-item">
                 <div class="category-circle">
-                    <img src="{{ $category->img_path }}" alt="{{ $category->name }}">
+                    <a href="{{ route('category', $category->id) }}"><img src="{{ $category->img_path }}"
+                            alt="{{ $category->name }}"></a>
                 </div>
                 <div class="category-name">
-                    <h4>{{ $category->name }}</h4>
+                    <a href="{{ route('category', $category->id) }}">
+                        <h4>{{ $category->name }}</h4>
+                    </a>
                 </div>
             </div>
         @endforeach
@@ -24,10 +27,19 @@
                 <div class="swiper-slide">
                     <div class="card">
                         <div>
-                            <img src="{{ $product->img_path }}" class="card-img-top" alt="{{ $product->name }}">
+                            <a href="{{ route('product', $product->id) }}"><img src="{{ $product->img_path }}"
+                                    class="card-img-top" alt="{{ $product->name }}"></a>
                         </div>
                         <div class="card-body">
-                            <h3 class="card-title">$<span>{{ explode('.', $product->price)[0] }}</span>.00</h3>
+                            <h3 class="card-title">
+                                @php
+                                    $priceAfterDiscount = $product->price - $product->getTodayDiscount();
+                                    $priceArray = explode('.', $priceAfterDiscount);
+                                    $firstPrice = $priceArray[0];
+                                    $secondPrice = $priceArray[1] ?? 0;
+                                @endphp
+                                $<span>{{ $firstPrice }}</span>.{{ $secondPrice }}
+                            </h3>
                             <p class="card-text my-2">${{ $product->price }}</p>
                         </div>
                     </div>
@@ -56,7 +68,9 @@
                         <img src="{{ $product->img_path }}" alt="">
                     </div>
                     <div class="product-title">
-                        <p>{{ $product->name }}</p>
+                        <a href="{{ route('product', $product->id) }}">
+                            <p>{{ $product->name }}</p>
+                        </a>
                     </div>
                     <div class="product-body">
                         <div class="d-flex justify-content-between">
@@ -73,7 +87,8 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <p style="font-size: 20px;font-weight: 500;margin: 0 10px">${{ $product->price }}</p>
-                            <button class="btn"><i class="fas fa-shopping-cart"></i></button>
+                            <button class="btn cart" data-id="{{ $product->id }}"><i
+                                    class="fas fa-shopping-cart"></i></button>
                         </div>
                     </div>
                 </div>
@@ -84,3 +99,26 @@
         </div>
     </div>
 @endsection
+
+@push('script')
+    <script>
+        document.querySelectorAll('.addCartItem').forEach(el => {
+            el.onclick = () => {
+                let id = el.getAttribute('data-id');
+                $.ajax({
+                    method: 'POST',
+                    url: "{{ route('addItemToCart') }}" + '/' + id,
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                    },
+                    success: function(res) {
+                        if (res) {
+                            alert(res.data)
+                        }
+                    }
+                });
+            }
+
+        });
+    </script>
+@endpush

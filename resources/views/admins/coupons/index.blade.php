@@ -44,7 +44,7 @@
 
         <tbody>
             @forelse ($coupons as $coupon)
-                <tr>
+                <tr id="tr-{{ $coupon->id }}">
                     <td><input type="checkbox" name="itemsIds[]" class="chbtn" value="{{ $coupon->id }}"></td>
                     <td>{{ $coupon->id }}</td>
                     <td>{{ $coupon->code }}</td>

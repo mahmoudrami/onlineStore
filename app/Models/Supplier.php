@@ -23,6 +23,14 @@ class Supplier extends Authenticatable
         return $this->hasMany(product::class);
     }
 
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+
     function getImgPathAttribute()
     {
         if ($this->image == 'no-image.png') {

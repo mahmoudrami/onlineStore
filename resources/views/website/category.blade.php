@@ -1,744 +1,136 @@
 @extends('website.layout')
 
+@push('css')
+    <style>
+        .color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin: 5px;
+        }
+
+        /* hide all input radio  */
+        .colors .radioColor {
+            display: none;
+        }
+
+        .color.selected {
+            background-color: #f1c40f !important;
+            border: 1px solid gray;
+        }
+    </style>
+@endpush
+
 @section('content')
     @include('includes.buttonCategory')
     <div class="d-flex">
-        <div class="filter mx-3 p-3" style="width: 200px">
-            <div>
-                <h3>Filter</h3>
-                <hr>
-            </div>
-            <div class="filter-card my-3">
-                <div class="filter-title">
-                    <h5>Category</h5>
+        <form action="{{ route('category', $category_id) }}" method="get">
+            <div class="filter mx-3 p-3" style="width: 240px">
+                <div>
+                    <h3>Filter</h3>
+                    <hr>
                 </div>
-                <div class="filter-body d-flex justify-content-between flex-column-2 flex-wrap">
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
+                @foreach ($attributes as $attribute)
+                    <div class="filter-card my-3">
+                        <div class="filter-title">
+                            {{-- @dd($attribute->values) --}}
+                            <h5>{{ $attribute->name }}
+                                ({{ count($attribute->values()->whereTranslation('locale', 'en')->get()) }})
+                            </h5>
                         </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
+                        <div class="filter-body colors">
+                            <div class="row">
+                                @foreach ($attribute->values()->whereTranslation('locale', 'en')->get() as $value)
+                                    @if ($attribute->name == 'Color')
+                                        <div class="col-lg-6 form-check">
+                                            <input type="radio" name="{{ $attribute->name }}" @checked(request()->query($attribute->name) == $value->value)
+                                                value="{{ $value->value }}" class="radioColor" id="{{ $value->value }}">
+                                            <label for="{{ $value->value }}">
+                                                <div class="color {{ request()->query($attribute->name) == $value->value ? 'selected' : '' }}"
+                                                    data-color="{{ $value->value }}"
+                                                    style="background-color: {{ $value->value }}"></div>
+                                            </label>
+                                        </div>
+                                    @else
+                                        <div class="col-lg-6 form-check">
+                                            <input name="{{ $attribute->name }}" @checked(request()->query($attribute->name) == $value->value)
+                                                value="{{ $value->value }}" id="{{ $value->value }}" type="radio">
+                                            <label for="{{ $value->value }}">{{ $value->value }}</label>
+                                        </div>
+                                    @endif
+                                @endforeach
+
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="filter-card my-3">
-                <div class="filter-title">
-                    <h5>Color</h5>
-                </div>
-                <div class="filter-body d-flex justify-content-between flex-column-2 flex-wrap">
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
+                @endforeach
+                <div class="filter-card my-3">
+                    <div class="filter-title">
+                        {{-- @dd($attribute->values) --}}
+                        <button class="btn w-100" style="background-color: var(--mainColor);color: white">Filter</button>
                     </div>
                 </div>
             </div>
-            <div class="filter-card my-3">
-                <div class="filter-title">
-                    <h5>Material</h5>
-                </div>
-                <div class="filter-body d-flex justify-content-between flex-column-2 flex-wrap">
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="filter-card my-3">
-                <div class="filter-title">
-                    <h5>Style</h5>
-                </div>
-                <div class="filter-body d-flex justify-content-between flex-column-2 flex-wrap">
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="filter-card my-3">
-                <div class="filter-title">
-                    <h5>Type</h5>
-                </div>
-                <div class="filter-body d-flex justify-content-between flex-column-2 flex-wrap">
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="filter-card my-3">
-                <div class="filter-title">
-                    <h5>Length</h5>
-                </div>
-                <div class="filter-body d-flex justify-content-between flex-column-2 flex-wrap">
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="filter-card my-3">
-                <div class="filter-title">
-                    <h5>Features</h5>
-                </div>
-                <div class="filter-body d-flex justify-content-between flex-column-2 flex-wrap">
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="filter-card my-3">
-                <div class="filter-title">
-                    <h5>Brand</h5>
-                </div>
-                <div class="filter-body d-flex justify-content-between flex-column-2 flex-wrap">
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="filter-card my-3">
-                <div class="filter-title">
-                    <h5>Size</h5>
-                </div>
-                <div class="filter-body d-flex justify-content-between flex-column-2 flex-wrap">
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                        <div>
-                            <input type="radio">
-                            <label for="">Man</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </form>
 
         <div class="products-category">
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/سماعة.jpg') }}" alt="">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
+            @foreach ($productsCategory as $product)
+                <div class="product">
+                    <div class="product-image text-center">
+                        <a href="{{ route('product', $product->id) }}">
+                            <img src="{{ $product->img_path }}" alt="{{ $product->name }}">
+                        </a>
+                        @if (Auth::check())
+                            @if (in_array($product->id, $productIdsInWishlist))
+                                <i class="fas fa-heart wishList text-danger" data-id="{{ $product->id }}"></i>
+                            @else
+                                <i class="fas fa-heart wishList" data-id="{{ $product->id }}"></i>
+                            @endif
+                        @endif
                     </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
+                    <div class="product-title">
+                        <a href="{{ route('product', $product->id) }}">{{ $product->name }}</a>
                     </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/سماعة.jpg') }}" alt="">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
+                    <div class="product-body">
+                        <div class="d-flex justify-content-between">
+                            @for ($i = 0; $i < 5; $i++)
+                                @if ($product->rate <= $i)
+                                    <i class="fas fa-star mx-sm-1"></i>
+                                @else
+                                    <i class="fas fa-star mx-sm-1 text-warning"></i>
+                                @endif
+                            @endfor
+                            <span>{{ $product->sold }} sold</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p style="font-size: 20px;font-weight: 500;margin: 0 10px">${{ $product->price }}</p>
+                            <button class="btn cart"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/سماعة.jpg') }}" alt="">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/سماعة.jpg') }}" alt="">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/سماعة.jpg') }}" alt="">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/سماعة.jpg') }}" alt="">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/سماعة.jpg') }}" alt="">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/books.jpg') }}" alt="">
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/كريم.jpg') }}" alt="">
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/كنبة.jpg') }}" alt="">
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/اكسسوار.jpg') }}" alt="">
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/نظارة.jpg') }}" alt="">
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/ساعة.jpg') }}" alt="">
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/jeans.jpg') }}" alt="">
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/بكل.jpg') }}" alt="">
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product-image text-center">
-                    <img src="{{ asset('website/images/blush.jpg') }}" alt="">
-                </div>
-                <div class="product-title">
-                    <p>Smart Headphones</p>
-                </div>
-                <div class="product-body">
-                    <div class="d-flex justify-content-between">
-                        @for ($i = 0; $i < 5; $i++)
-                            <i class="fas fa-star mx-sm-1"></i>
-                        @endfor
-                        <span>45 sold</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p style="font-size: 20px;font-weight: 500;margin: 0 10px">$24</p>
-                        <button class="btn"><i class="fas fa-shopping-cart"></i></button>
-                    </div>
-                </div>
-            </div>
-
+            @endforeach
         </div>
     </div>
     <div class="pagination">
-        <ul class="d-flex justify-content-between">
-            <li><a href=""><i class="fas fa-arrow-left"></i></a></li>
-            <li><a href="" class="active">1</a></li>
-            <li><a href="">2</a></li>
-            <li><a href="">3</a></li>
-            <li><a href="">4</a></li>
-            <li><a href="">5</a></li>
-            <li><a href="">6</a></li>
-            <li><a href="">7</a></li>
-            <li><a href=""><i class="fas fa-arrow-right"></i></a></li>
-        </ul>
+        {{-- {{ $productsCategory->links() }} --}}
     </div>
 @endsection
+
+@push('script')
+    <script>
+        const colors = document.querySelectorAll('.colors .color');
+        colors.forEach(el => {
+            el.onclick = () => {
+                let isSelected = el.classList.contains('selected')
+                if (!isSelected) {
+                    colors.forEach(ele => {
+                        ele.classList.remove('selected');
+                    });
+                    el.classList.add('selected');
+                } else {
+                    el.classList.remove('selected');
+                }
+            }
+        });
+    </script>
+@endpush

@@ -4,8 +4,8 @@
 
 @section('content')
     <div class="wishList m-3 p-4">
-        <div class="title-wishList my-3">
-            <h3>MY WISHLIST (3)</h3>
+        <div class="title-wishList uppercase my-3">
+            <h3>MY WISHLIST ( {{ count($productsWishlist) }} )</h3>
         </div>
         <div class="d-flex">
             <div class="mx-3 select-all-wishList">
@@ -17,10 +17,10 @@
             </div>
         </div>
         <div class="d-flex justify-content-start flex-wrap">
-            @foreach ($products as $product)
+            @forelse ($productsWishlist as $product)
                 <div class="wishList-item">
                     <div class="image-wishlist">
-                        <img src="{{ asset('website/images/dress.jpg') }}" alt="">
+                        <img src="{{ $product->img_path }}" alt="">
                     </div>
                     <div class="title-wishlist">
                         <h5 class="mb-0">{{ $product->name }}</h5>
@@ -31,7 +31,8 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <p style="font-size: 20px;font-weight: 500;margin: 0 10px">${{ $product->price }}</p>
-                            <button class="btn"><i class="fas fa-shopping-cart"></i></button>
+                            <button class="btn cart" data-id="{{ $product->id }}"><i
+                                    class="fas fa-shopping-cart"></i></button>
                         </div>
                     </div>
                     <div class="heart">
@@ -39,7 +40,9 @@
                         <i class="fas fa-heart" style="color: red"></i>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <h1>No Product WishList User</h1>
+            @endforelse
         </div>
     </div>
 
@@ -49,31 +52,45 @@
         </div>
 
         <div class="products">
-            @foreach ($productCategories as $productCategory)
+            @foreach ($productCategories ?? $products as $productCategory)
                 <div class="product">
                     <div class="product-image text-center">
-                        <img src="{{ asset('website/images/سماعة.jpg') }}" alt="">
+                        <img src="{{ $productCategory->img_path }}" alt="">
+                        @if (in_array($productCategory->id, $productIdsInWishlist))
+                            <i class="fas fa-heart wishList text-danger" data-id="{{ $product->id }}"></i>
+                        @else
+                            <i class="fas fa-heart wishList" data-id="{{ $productCategory->id }}"></i>
+                        @endif
                     </div>
                     <div class="product-title">
-                        <p>{{ $productCategory->name }}</p>
+                        <a href="{{ route('product', $productCategory->id) }}">{{ $productCategory->name }}</a>
                     </div>
                     <div class="product-body">
                         <div class="d-flex justify-content-between">
-                            @for ($i = 0; $i < 5; $i++)
-                                <i class="fas fa-star mx-sm-1"></i>
-                            @endfor
-                            <span>{{ $productCategory->sold }} sold</span>
+                            <div class="d-flex align-items-center gap-1">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($productCategory->rate >= $i)
+                                        <i class="fas fa-star mx-sm-1 text-warning"></i>
+                                    @else
+                                        <i class="fas fa-star mx-sm-1"></i>
+                                    @endif
+                                @endfor
+                            </div>
+                            <div>
+                                <span>{{ $productCategory->sold }} sold</span>
+                            </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <p style="font-size: 20px;font-weight: 500;margin: 0 10px">${{ $productCategory->price }}</p>
-                            <button class="btn"><i class="fas fa-shopping-cart"></i></button>
+                            <button class="btn cart" data-id="{{ $productCategory->id }}"><i
+                                    class="fas fa-shopping-cart"></i></button>
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
         <div class="pagination">
-            {{ $productCategories->links() }}
+            {{ $productCategories ? $productCategories->links() : '' }}
         </div>
     </div>
 @endsection

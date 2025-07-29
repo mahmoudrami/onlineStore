@@ -9,7 +9,7 @@
                 everything
                 you need - from the latest trends to everyday essentials - all
                 carefully selected to bring you the best experience.</p>
-            <button class="btn my-5" id="guest">Continuo as Guest</button>
+            <a href="{{ route('categories') }}" class="btn my-5" id="guest">Continuo as Guest</a>
         </div>
         <div>
             <img src="{{ asset('website/images/imageOne.jpg') }}" alt="" width="500px" height="500px">

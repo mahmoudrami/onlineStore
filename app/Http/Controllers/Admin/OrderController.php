@@ -39,14 +39,6 @@ class OrderController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(Order $order)
@@ -70,7 +62,6 @@ class OrderController extends Controller
         $order->update([
             'status' => 'paid'
         ]);
-
         flash()->success('Change Status Order');
         return redirect()->route('admin.order.index');
     }

@@ -42,7 +42,7 @@
 
         <tbody>
             @forelse ($orders as $order)
-                <tr>
+                <tr id="tr-{{ $order->id }}">
                     <td><input type="checkbox" name="itemsIds[]" class="chbtn" value="{{ $order->id }}"></td>
                     <td>{{ $order->id }}</td>
                     <td>{{ $order->user->name }}</td>

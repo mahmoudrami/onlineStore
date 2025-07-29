@@ -21,7 +21,7 @@ function deleteImage($imageName, $folder = '')
 
 function has_permission($route_name)
 {
-    if (Auth::guard('admin')->user()->id == 1) {
+    if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->id == 1) {
         return true;
     }
     $checkPermission = Permission::where('route_name', $route_name)->first();

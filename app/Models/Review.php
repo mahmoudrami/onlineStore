@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Review extends Model
@@ -10,9 +12,17 @@ class Review extends Model
     //
     use SoftDeletes;
 
-    function scopeActive($query){
+    protected $guarded = [];
+    protected $translatedAttributes = ['comment'];
+
+
+    function scopeActive($query)
+    {
         return $query->where('stats', 'active');
     }
 
-    protected $guarded = [];
+    function user()
+    {
+        return $this->BelongsTo(User::class);
+    }
 }

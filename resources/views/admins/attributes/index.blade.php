@@ -41,7 +41,7 @@
 
         <tbody>
             @forelse ($attributes as $attribute)
-                <tr>
+                <tr id="tr-{{ $attribute->id }}">
                     <td><input type="checkbox" name="itemsIds[]" class="chbtn" value="{{ $attribute->id }}"></td>
                     <td>{{ $attribute->id }}</td>
 
